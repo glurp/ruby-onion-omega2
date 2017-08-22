@@ -1,20 +1,28 @@
 Presentation
 ============
 
-Discovered Omega2+, OpenWrt with 128MB for 10€ , I try it with
-ruby lang.
+Discovered Omega2+, OpenWrt with 128MB for 10€ , I try it with ruby lang.
 
-**TODO:**
-* [x] develop a gpio library for digital input/output access
-* [ ] develop a pwm library
-* [ ] develop acces to serial line
+Plan can be use Omega2S for industrial factoring.
+
+The concurrents seems to be :
+* Linkit smart : very near Onion product ( 12$ )
+* Olimex RT5350 : 32MB RAM, but 5 Ethernet port ( 15€ )
+* Arduino yun : more expensive ( 50$ ) 1 Ethernet, 64MB RAM
+* RAK633 : 64MB RAM, 5 Ethernets port, MT7628  , 10$ (? aliexpress)
+* Banana PI RT1 : 5 Ethernets ports,512MB RAM, more more expensive
 
 **Plan:**
 * V1 : develop this material without C librairie : use sysfs and some Onion exec (```fast-gpio``` ...)
 * V2 : link to onionlib shared library via FFI, for provide same API as V1, but faster
 * V3 : make a onion-mruby executable with all V2 io included :-)
 
-Curently V1 is started.
+**TODO on V1 :**
+* [x] develop a gpio library for digital input/output access
+* [ ] document pin numbering...
+* [ ] develop a pwm library usnig fast-gpio
+* [ ] develop acces to serial line
+* [ ] configure the gpio : use  ```omega2-ctrl gpiomux```   for configure uart/i2c/spi/i2s/pwm
 
 Ruby use on Omega2+
 ====================
@@ -56,7 +64,7 @@ And at ruby/2.4 :
 9       /usr/lib/ruby/2.4/yaml
 ```
 
-after installing python and node.js, it remains 5MB free on the 32MB flash  ( ```/overlay``` ).
+After installing python (12MB) and node.js (9MB), it remains 5MB free on the 32MB flash  ( ```/overlay``` ).
 
 
 
