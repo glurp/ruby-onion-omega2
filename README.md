@@ -1,12 +1,13 @@
-== Presentation
+Presentation
+============
 
 Discovered Omega2+, OpenWrt with 128MB for 10€ , I try it with
 ruby lang.
 
 **TODO:**
-* develop a gpio library for digital input/output access
-* develop a pwm library
-* acces to serial line
+* [*] develop a gpio library for digital input/output access
+* [ ] develop a pwm library
+* [ ] develop acces to serial line
 
 **Plan:**
 * V1 : develop this material without C librairie : use sysfs and some Onion exec fast-gpio ...)
@@ -15,7 +16,8 @@ ruby lang.
 
 Curently V1 is started.
 
-== Ruby use on Omega2+
+Ruby use on Omega2+
+====================
 
 no difficulties :
 > ```opkg intall ruby```
@@ -23,14 +25,18 @@ no difficulties :
 
 This represent 5MB on flash memory, at ```/usr/lib/ruby```
 
-== onion-gpio.rb
 
+
+
+onion-gpio.rb
+=============
 use sysfs for acces to gpio.
 
 Duration: 3ms for writing one output line.
 
 
-== Example
+Example
+=======
 
 ```ruby
 require_relative 'ionion-gpio.rb'
