@@ -5,7 +5,7 @@ Discovered Omega2+, OpenWrt with 128MB for 10€ , I try it with
 ruby lang.
 
 **TODO:**
-* [*] develop a gpio library for digital input/output access
+* [x] develop a gpio library for digital input/output access
 * [ ] develop a pwm library
 * [ ] develop acces to serial line
 
