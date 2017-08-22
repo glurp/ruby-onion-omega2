@@ -56,7 +56,7 @@ And at ruby/2.4 :
 9       /usr/lib/ruby/2.4/yaml
 ```
 
-after installing python and node.js, it remains 5MB free on /overlay.
+after installing python and node.js, it remains 5MB free on the 32MB flash  ( ```/overlay``` ).
 
 
 
