@@ -12,17 +12,22 @@ The concurrents seems to be :
 * RAK633 : 64MB RAM, 5 Ethernets port, MT7628  , 10$ (? aliexpress)
 * Banana PI RT1 : 5 Ethernets ports,512MB RAM, more more expensive
 
-**Plan:**
+Developer Plan
+==============
+**Previsions :**
 * V1 : develop this material without C librairie : use sysfs and some Onion exec (```fast-gpio``` ...)
 * V2 : link to onionlib shared library via FFI, for provide same API as V1, but faster
 * V3 : make a onion-mruby executable with all V2 io included :-)
 
 **TODO on V1 :**
 * [x] develop a gpio library for digital input/output access
+* [*] develop a pwm library usnig fast-gpio
 * [ ] document pin numbering...
-* [ ] develop a pwm library usnig fast-gpio
 * [ ] develop acces to serial line
 * [ ] configure the gpio : use  ```omega2-ctrl gpiomux```   for configure uart/i2c/spi/i2s/pwm
+
+Feel free to collaborate to the project !
+
 
 Ruby use on Omega2+
 ====================
