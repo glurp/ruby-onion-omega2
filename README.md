@@ -2,24 +2,32 @@ Presentation
 ============
 
 Discovered Omega2+, OpenWrt with 128MB for 10€ , I try it with ruby lang.
+* 128 MB RAM, 32 MB EPROM, 12 MB free after ruby install
+* openWrt/ ELED
+* One etherneti port, wifi
+* 5$ (32MB RAM) or 10$ (128 MB RAM)
 
-Plan can be use Omega2S for industrial factoring.
 
 The concurrents seems to be :
-* Linkit smart : very near Onion product ( 12$ )
-* Olimex RT5350 : 32MB RAM, but 5 Ethernet port ( 15€ )
+* Linkit smart : very near Onion product ( 12$ ), plus Atmel for Arduino-compatibility
+* Olimex RT5350 : 32MB RAM, with 5 Ethernet port ( 15$ € )
 * Arduino yun : more expensive ( 50$ ) 1 Ethernet, 64MB RAM
-* RAK633 : 64MB RAM, 5 Ethernets port, MT7628  , 10$ (? aliexpress)
-* Banana PI RT1 : 5 Ethernets ports,512MB RAM, more more expensive
+* RAK633 : 64MB RAM, 5 Ethernets ports, MT7628  , 10$ (? aliexpress)
+* Banana PI RT1 : 5 Ethernets ports,512MB RAM, more more expensive (70$ ?)
 
 Developer Plan
 ==============
-**Previsions :**
+
+Previsions :
+------------
+
 * V1 : develop this material without C librairie : use sysfs and some Onion exec (```fast-gpio``` ...)
 * V2 : link to onionlib shared library via FFI, for provide same API as V1, but faster
 * V3 : make a onion-mruby executable with all V2 io included :-)
 
-**TODO on V1 :**
+TODO on V1 :
+------------
+
 * [x] develop a gpio library for digital input/output access
 * [x] develop a pwm library using fast-gpio
 * [x] OLED access ion I2C: seem ok (text write, reset...)
@@ -77,9 +85,11 @@ After installing python (12MB) and node.js (9MB), it remains 5MB free on the 32M
 
 onion-gpio.rb
 =============
-use sysfs for acces to gpio.
+Use sysfs for acces to gpio.
 
 Duration: 3ms for writing one output line.
+
+Use programs like fast-gpio, oled-exp an i2c-get for other acces.
 
 **issues**
 
@@ -97,6 +107,8 @@ require_relative 'ionion-gpio.rb'
 gpio=OnionGpio.new( 3 , false)
 gpio.setOutputDirection()
 100.times { |i| gpio.setValue(i%2) ; sleep 0.1}
+gpio.pwm( 1000, 50) # 1 KHz, 50% state on
+gpio.pwmreset 
 
 ```
 this give 6% CPU, for the process (top visualisation)
