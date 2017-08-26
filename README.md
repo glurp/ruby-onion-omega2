@@ -21,8 +21,10 @@ Developer Plan
 
 **TODO on V1 :**
 * [x] develop a gpio library for digital input/output access
-* [*] develop a pwm library usnig fast-gpio
-* [ ] document pin numbering...
+* [x] develop a pwm library using fast-gpio
+* [x] OLED access ion I2C: seem ok (text write, reset...)
+* [ ] I2C
+* [ ] understand and document pin numbering...
 * [ ] develop acces to serial line
 * [ ] configure the gpio : use  ```omega2-ctrl gpiomux```   for configure uart/i2c/spi/i2s/pwm
 
