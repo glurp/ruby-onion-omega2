@@ -119,3 +119,40 @@ oled=OnionOled.new(0,0)
 oled.write_at(0,0,"Hello world...")
 
 ```
+Oled clock :
+
+```ruby
+########################################################################
+#  oled : test oled
+########################################################################
+require_relative "onion-gpio"
+
+def getMem()
+ `free`.each_line {|line|
+    next unless line=~ /^Mem:/
+    mem=line.chomp.split(/\s+/)[3].to_i/1024
+    return("FreeMem: #{mem} MB")
+ }
+ "?"
+end
+
+def getFlash()
+ `df -h`.each_line {|line|
+    next unless line=~ /^overlayfs:/
+    mem=line.chomp.split(/\s+/)[3]
+    return("FreeFlash: #{mem}")
+ }
+ "?"
+end
+
+oled=OnionOled.new(0,0)
+oled.reset
+oled.pos(0,0,ARGV.join(' ')) 
+loop {
+   oled.pos(10,5,Time.now.to_s.split(' ')[1])
+   oled.pos(0,0,getMem())
+   oled.pos(0,1,getFlash())
+   sleep 1
+}
+```
+[a photo](https://user-images.githubusercontent.com/27629/29748900-a89fcd00-8b20-11e7-8dee-249171d4ddd1.png)
