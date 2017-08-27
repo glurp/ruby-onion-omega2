@@ -18,7 +18,10 @@
 #   L2:1
 #   L3:<binary-data> : 3 bytes by pixel, row by row, col by col, RGB in binary, 0..255 each
 #
+#-------------------------------------------------------------------------
+#
 #  OLED Format :
+#
 #   one byte represent 8 pixels on same column 
 #  L1     <byte 0 >   <byte 1  > ....     <byte  127>
 #  L2     <byte 0 >   <byte 1  > ....     <byte  127>
@@ -29,7 +32,7 @@
 #         ...................
 #L56..L64 <byte 897>                      <byte 1024>
 #
-#  so, pixel (x,y) is in byte ((y/8)*128 +x)i at  bit y%8
+#  so, pixel (x,y) is in byte ((y/8)*128 +x) at  bit y%8
 #
 ###########################################################################
 
