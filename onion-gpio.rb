@@ -60,6 +60,10 @@ module V1Tools
     pid=spawn(*(args.flatten),:chdir=>"/tmp")   
     Process.wait(pid)
   end
+  def exec(*args)
+    puts "exec : > #{args.join(' ')}" if @verbose
+    system( *( args.map {|a| a.to_s} ))
+  end
 end
 
 ########################################################################
@@ -190,11 +194,20 @@ class OnionI2C < ConstOnionGpio
     @getted=0
   end
   def show_detect(no=3)
-     puts system("i2cdetect -y #{@gpio}")
+     puts exec("i2cdetect -y #{@gpio}")
   end 
-  def show_registers(no=3)
-     puts system("i2cdump -y #{@gpio} #{3}")
+  def show_registers_bytes(no=3)
+     puts exec("i2cdump -y #{@gpio} #{no} b")
   end 
+  def show_registers_words(no=3)
+     puts exec("i2cdump -y #{@gpio} #{no} w")
+  end 
+  def read_register_byte(no,address)
+    ret=exec("i2cget","-y",@gpio.to_s,no.to_s,"0x%02X" % address,"b")
+  end
+  def read_register_word(no,address)
+    ret=exec("i2cget","-y",@gpio.to_s,no.to_s,"0x%02X" % address,"w")
+  end
 end
 
 ########################################################################

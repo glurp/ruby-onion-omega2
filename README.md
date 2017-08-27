@@ -4,13 +4,13 @@ Presentation
 Discovered Omega2+, OpenWrt with 128MB for 10€ , I try it with ruby lang.
 * 128 MB RAM, 32 MB EPROM, 12 MB free after ruby install
 * openWrt/ ELED
-* One etherneti port, wifi
+* Pins for One ethernet port, wifi
 * 5$ (32MB RAM) or 10$ (128 MB RAM)
 
 
 The concurrents seems to be :
-* Linkit smart : very near Onion product ( 12$ ), plus Atmel for Arduino-compatibility
-* Olimex RT5350 : 32MB RAM, with 5 Ethernet port ( 15$ € )
+* Linkit smart : very near Onion product ( 12$ ), with Atmel chip for Arduino-compatibility
+* Olimex RT5350 : 32MB RAM, with 5 Ethernets ports ( 15$ € )
 * Arduino yun : more expensive ( 50$ ) 1 Ethernet, 64MB RAM
 * RAK633 : 64MB RAM, 5 Ethernets ports, MT7628  , 10$ (? aliexpress)
 * Banana PI RT1 : 5 Ethernets ports,512MB RAM, more more expensive (70$ ?)
@@ -22,17 +22,18 @@ Previsions :
 ------------
 
 * V1 : develop this material without C librairie : use sysfs and some Onion exec (```fast-gpio``` ...)
-* V2 : link to onionlib shared library via FFI, for provide same API as V1, but faster
+* V2 : link to onionlib shared library via FFI, provide same API as V1, but faster
 * V3 : make a onion-mruby executable with all V2 io included :-)
+
+Currently: V1 only :)
 
 TODO on V1 :
 ------------
 
 * [x] develop a gpio library for digital input/output access
 * [x] develop a pwm library using fast-gpio
-* [x] OLED access ion I2C: seem ok (text write, reset...)
+* [x] OLED access ion I2C: seem ok with SSD1308 based Oled (text write, reset...)
 * [ ] I2C
-* [ ] understand and document pin numbering...
 * [ ] develop acces to serial line
 * [ ] configure the gpio : use  ```omega2-ctrl gpiomux```   for configure uart/i2c/spi/i2s/pwm
 
@@ -102,13 +103,19 @@ Example
 =======
 
 ```ruby
+# put a LED pn port 3,
+
 require_relative 'ionion-gpio.rb'
 
 gpio=OnionGpio.new( 3 , false)
 gpio.setOutputDirection()
 100.times { |i| gpio.setValue(i%2) ; sleep 0.1}
 gpio.pwm( 1000, 50) # 1 KHz, 50% state on
-gpio.pwmreset 
+gpio.pwm_reset 
+
+# put a OLED on I2C SDA/SCL, : work with seeedStudio OLED grovve
+
+oled=OnionOled.new(0,0)
+oled.write_at(0,0,"Hello world...")
 
 ```
-this give 6% CPU, for the process (top visualisation)
