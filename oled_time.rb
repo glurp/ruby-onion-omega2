@@ -27,7 +27,7 @@ oled.pos(0,0,ARGV.join(' '))
 nb=0
 loop {
    oled.pos(10,5,Time.now.to_s.split(' ')[1])
-   if nb==0 || nb<60
+   if nb==0 || nb>60
      oled.pos(0,0,getMem())
      oled.pos(0,1,getFlash())
      nb=0
