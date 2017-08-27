@@ -33,8 +33,9 @@ TODO on V1 :
 * [x] develop a gpio library for digital input/output access
 * [x] develop a pwm library using fast-gpio
 * [x] OLED access ion I2C: seem ok with SSD1308 based Oled (text write, reset...)
+* [x] OLED create SSD130x file format from ppm file, send it to oled display
 * [ ] I2C
-* [ ] develop acces to serial line
+* [ ] uart
 * [ ] configure the gpio : use  ```omega2-ctrl gpiomux```   for configure uart/i2c/spi/i2s/pwm
 
 Feel free to collaborate to the project !
