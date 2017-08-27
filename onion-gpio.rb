@@ -175,8 +175,8 @@ class OnionGpio < ConstOnionGpio
     async_spawn( "fast-gpio","pwm",@gpio.to_s,frequency.to_s,(r < 0 ? 0 : (r > 100 ?  100 : r)).to_s)   
   end
   def pwm_reset()
-    pwm_set(0,0)
-    setValue(0)
+    puts "pwm #{@gpio} => pwm reset" if @verbose
+    async_spawn( "fast-gpio",@gpio.to_s,"0")   
   end
 end
 
@@ -212,8 +212,11 @@ end
 
 ########################################################################
 # Oled
+#    Seem to work with any SSD1308 Oled ship (I2C Oled driver 128xN)
 #    Tested with a 128x64 Oled Goove (seedStudio)
 #    Should work with Onion OledExp
+#    Draw file format :
+#      See http://www.seeedstudio.com/forum/viewtopic.php?f=10&t=3274
 ########################################################################
 class OnionOled < ConstOnionGpio
   include V1Tools
@@ -223,11 +226,13 @@ class OnionOled < ConstOnionGpio
     @noi2c     = noi2c
     @verbose   = verbose
     @opt=["-q"]
-    #@opt=["-v"] if verbose
+    @opt=["-v"] if verbose
     puts('OLED(%d,%d) ' % [@i2c,@noi2c]) if @verbose 
   end
   def reset()          sync_spawn("oled-exp","-c","power","on") end
   def clear()          sync_spawn("oled-exp","-c","cursor","1,1") end
+  #  set cursar and wwirte text a this position
+  #  position starts at 1,1 , max are 20,5 for a 128x64 OLED
   def pos(x,y,t="")    sync_spawn("oled-exp",@opt,"cursor","#{y+1},#{x+1}","write",t.to_s) end
   def write_at(x,y,text="") sync_spawn("oled-exp",@opt,"cursor","#{y+1},#{x+1}","write",text.to_s) end
   def write_text(text) sync_spawn("oled-exp",@opt,"write",text) end
@@ -235,11 +240,25 @@ class OnionOled < ConstOnionGpio
   def write_byte(value)sync_spawn("oled-exp",@opt,"writeByte",value.to_s) end
   def invert(on)       sync_spawn("oled-exp",@opt,"invert", on ? "on" : "off") end
   def bright(on)       sync_spawn("oled-exp",@opt,"dim", on ? "off" : "on") end
+
+  # cascad: chain several command in one shot
+  #    "write","txt"
+  #    "writeByte",v
+  #    "invert","on/of"
+  #    "dim","on/off"
+  #    "curser","y,x"
   def cascad(lcmd)     sync_spawn("oled-exp",@opt,"cascad",*(lcmd.map {|a|i a.to_s}) ) end
 
+  # file should be a lcd formated raster image : 
+  #    create image, 
+  #    convert it to ppm with image magick,
+  #    then convert it to oled format using ppm2oled.rb from here
+  #    convert x.png x.ppm ; ruby ppm2oled.rb x.ppm  x.bin
   def write_raster_file(fn)
     raise("File not exist") unless File.file?(fn)
-    sync_spawn("oled-exp",@opt,"draw",fn)
+    puts "> oled-exp  draw #{fn}" if @verbose
+    system("oled-exp","draw",fn)
+    #sync_spawn("oled-exp",@opt,"draw",fn) >> issue with file location...
   end
 end
 
@@ -263,6 +282,7 @@ if $0 == __FILE__
   oled=OnionOled.new(0,0,true)
   oled.reset
   oled.write_text("CouCou") ; sleep(1)
+  oled.write_raster_file("oled.bin"); sleep(1)
   oled.pos(0,1)
   3.times { oled.write_text(Time.now.to_s.split(' ')[1]) ; sleep(1) }
   
