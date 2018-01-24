@@ -2,11 +2,6 @@ Presentation
 ============
 
 Discovered Omega2+, OpenWrt with 128MB for 10€ , I try it with ruby Lang.
-* 128 MB RAM, 32 MB EPROM, 12 MB free after ruby install
-* openWrt/ ELED
-* Pins for One ethernet port, wifi
-* 5$ (32MB RAM) or 10$ (128 MB RAM)
-
 
 The concurrents seems to be :
 * Linkit smart : very near Onion product ( 12$ ), with Atmel chip for Arduino-compatibility
@@ -25,7 +20,7 @@ Previsions :
 * V2 : link to onionlib shared library via FFI, provide same API as V1, but faster
 * V3 : make a onion-mruby executable with all V2 io included :-)
 
-Currently: V1 only :)
+Currently: V1 done, V2 is started (OLED)
 
 TODO on V1 :
 ------------
@@ -34,10 +29,14 @@ TODO on V1 :
 * [x] develop a pwm library using fast-gpio
 * [x] OLED access ion I2C: seem ok with SSD1308 based Oled (text write, reset...)
 * [x] OLED create SSD130x file format from ppm file, send it to oled display
-* [ ] I2C
-* [ ] uart
 * [ ] gem ! ( actually, requiring ```onion-gpio.rb``` is sufficient)
 
+TODO on V2 :
+------------
+* [ ] develop a gpio library for digital input/output access
+* [ ] develop a pwm library using fast-gpio
+* [x] OLED  (text write, reset...)
+* [ ] gem ! 
 
 
 Feel free to collaborate to the project !
@@ -102,31 +101,26 @@ Oled clock :
 ########################################################################
 require_relative "onion-gpio"
 
-def getMem()
- `free`.each_line {|line|
-    next unless line=~ /^Mem:/
-    mem=line.chomp.split(/\s+/)[3].to_i/1024
-    return("FreeMem: #{mem} MB")
+def get_out(cmd,filter,nofield)
+ `#{cmd}`.each_line {|line|
+    next unless line=~ filter
+    data=line.chomp.split(/\s+/)[nofield]
+    ret= block_given? ? yield(data) : data
+    return(ret) if ret
  }
  "?"
 end
 
-def getFlash()
- `df -h`.each_line {|line|
-    next unless line=~ /^overlayfs:/
-    mem=line.chomp.split(/\s+/)[3]
-    return("FreeFlash: #{mem}")
- }
- "?"
-end
+def getMem()   get_out("free",/^Mem:/,3)        {|m| m.to_i/1024} end
+def getFlash() get_out("df -h",/^overlayfs:/,3)  end
 
 oled=OnionOled.new(0,0)
 oled.reset
 oled.pos(0,0,ARGV.join(' ')) 
 loop {
    oled.pos(10,5,Time.now.to_s.split(' ')[1])
-   oled.pos(0,0,getMem())
-   oled.pos(0,1,getFlash())
+   oled.pos(0,0, "FreeMem: #{getMem()} MB")
+   oled.pos(0,1,"FreeFlash: #{getFlash()}")
    sleep 1
 }
 ```
