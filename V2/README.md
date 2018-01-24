@@ -1,9 +1,9 @@
 V2 : Oion API using onion .so library
 =======================================
 
-How to use FFI with giddle
+How to use FFI with Fiddle
 ----------------------------
-see t.b :
+see file ```t.b``` :
 
 ```ruby
 require 'fiddle'
@@ -37,10 +37,7 @@ end
 TODO
 -----
 
-[X] : Oled
-[ ] : Gpio read/write DI/DO
-[ ] : Gpio pwm soft
-[ ] : 
-[ ] : 
-[ ] : 
-[ ] : 
+* [X] : Oled
+* [ ] : Gpio read/write DI/DO
+* [ ] : Gpio pwm soft
+* [ ] : gem
